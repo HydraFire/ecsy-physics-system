@@ -2,7 +2,7 @@
 
 components:
 
-- PhysicsRigidBody
+- PhysicsRigidBody, added physics to elementary figures
 ```js
   world.createEntity()
     .addObject3DComponent(mesh, scene)
