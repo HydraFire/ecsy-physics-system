@@ -1,0 +1,30 @@
+{
+  "name": "mywork",
+  "version": "1.0.0",
+  "description": "cloth project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js localhost:8080",
+    "me": "node serverME.js",
+    "build": "cross-env NODE_ENV=production npx webpack",
+    "compress": "npx gzipper --verbose ./public/models -i obj"
+  },
+  "author": "Yaroslav Koval",
+  "license": "ISC",
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "cannon-es": "^0.15.1",
+    "ecsy": "^0.3.2",
+    "ecsy-three": "0.0.6",
+    "express": "^4.16.4",
+    "three": "^0.118.3",
+    "troika-3d-text": "^0.30.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.2.0",
+    "webpack-hot-middleware": "^2.23.1"
+  }
+}
