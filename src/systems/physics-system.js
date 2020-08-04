@@ -8,60 +8,6 @@ import { VehicleBody } from "../components/vehicle-body"
 import { WheelBody } from "../components/wheel-body"
 
 
-function inputs(vehicle) {
-  document.onkeydown = handler;
-      document.onkeyup = handler;
-
-      var maxSteerVal = 0.5;
-      var maxForce = 1000;
-      var brakeForce = 1000000;
-      function handler(event){
-        //console.log('test');
-          var up = (event.type == 'keyup');
-
-          if(!up && event.type !== 'keydown'){
-              return;
-          }
-
-          vehicle.setBrake(0, 0);
-          vehicle.setBrake(0, 1);
-          vehicle.setBrake(0, 2);
-          vehicle.setBrake(0, 3);
-
-          switch(event.keyCode){
-
-          case 87: // forward
-              vehicle.applyEngineForce(up ? 0 : -maxForce, 2);
-              vehicle.applyEngineForce(up ? 0 : -maxForce, 3);
-              break;
-
-          case 83: // backward
-              vehicle.applyEngineForce(up ? 0 : maxForce, 2);
-              vehicle.applyEngineForce(up ? 0 : maxForce, 3);
-              break;
-
-          case 66: // b
-              vehicle.setBrake(brakeForce, 0);
-              vehicle.setBrake(brakeForce, 1);
-              vehicle.setBrake(brakeForce, 2);
-              vehicle.setBrake(brakeForce, 3);
-              break;
-
-          case 68: // right
-              vehicle.setSteeringValue(up ? 0 : -maxSteerVal, 0);
-              vehicle.setSteeringValue(up ? 0 : -maxSteerVal, 1);
-              break;
-
-          case 65: // left
-              vehicle.setSteeringValue(up ? 0 : maxSteerVal, 0);
-              vehicle.setSteeringValue(up ? 0 : maxSteerVal, 1);
-              break;
-
-          }
-      }
-}
-
-
 var quaternion = new THREE.Quaternion();
 var euler = new THREE.Euler();
 
@@ -139,7 +85,7 @@ export class PhysicsSystem extends ECSY.System {
       for (var i = 0; i < wheelBodies.length; i++) {
         this._physicsWorld.addBody(wheelBodies[i])
       }
-      inputs(vehicle)
+    //  inputs(vehicle)
 /*
       this._physicsWorld.addEventListener('postStep', function(){
         console.log('test');

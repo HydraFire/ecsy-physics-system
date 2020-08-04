@@ -14,18 +14,25 @@ import { ConvexBufferGeometry } from '../src/lib/ConvexGeometry.js';
 import { PhysicsRigidBody } from "../src/components/physics-rigid-body"
 import { VehicleBody } from "../src/components/vehicle-body"
 import { WheelBody } from "../src/components/wheel-body"
+import { CarDoor } from "../src/components/car-door"
 
 import { PhysicsSystem } from "../src/systems/physics-system"
+import { RaycastButtonSystem, RaycastButton } from "../src/systems/raycast-button-system"
+import { CarDoorSystem } from "../src/systems/car-door-system"
 import { WheelSystem } from "../src/systems/wheel-system"
 
 
 const world = new ECSYTHREE.ECSYThreeWorld()
   .registerSystem(PhysicsSystem)
   .registerSystem(WheelSystem)
+  .registerSystem(RaycastButtonSystem)
+  .registerSystem(CarDoorSystem)
   .registerComponent(ECSYTHREEX.Transform)
   .registerComponent(PhysicsRigidBody)
   .registerComponent(VehicleBody)
   .registerComponent(WheelBody)
+  .registerComponent(RaycastButton)
+  .registerComponent(CarDoor)
 
 
 const data = ECSYTHREEX.initialize(world, { vr: false })
@@ -35,6 +42,10 @@ const { scene, renderer, camera } = data.entities
 const cam = camera.getComponent(ECSYTHREE.Object3DComponent)["value"]
 cam.position.set(-7, 0,-7).multiplyScalar(0.5)
 cam.lookAt(new THREE.Vector3())
+
+const raycaster = new THREE.Raycaster()
+
+//let controls
 
 setTimeout(() => {
   const domElement = document.body.querySelector("canvas")
@@ -132,7 +143,6 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
   world
     .createEntity()
     .addObject3DComponent(miniBoxMesh, scene)
-
     .addComponent(PhysicsRigidBody, { scale:{ x:1, y:4, z:2 }, mass: 100, type: 'box' })
 
     .addComponent(ECSYTHREEX.Transform, {
@@ -140,7 +150,9 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
       rotation: { x: 0, y: 0, z: 0 }
     })
     .addComponent(ECSYTHREEX.Parent, { value: scene })
-    
+
+
+
 /*
     world
       .createEntity()
@@ -176,7 +188,7 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
 */
 
 
-
+/*
       var loader = new GLTFLoader().setPath( './src/models/' ).load( 'ground.glb', function ( gltf ) {
 
 							gltf.scene.traverse( function ( child ) {
@@ -211,7 +223,7 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
 
 
 						} );
-
+*/
 
 
 
@@ -259,8 +271,6 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
 
 
 
-
-
                                 car = world
                                   .createEntity()
                                   .addObject3DComponent(node.clone(), scene)
@@ -270,6 +280,19 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
                                     rotation: { x: 0, y: 0, z: 0 }
                                   })
                                   .addComponent(ECSYTHREEX.Parent, { value: scene })
+
+                                  const carDoor = new THREE.BoxBufferGeometry(0.3, 2, 4)
+                                  const carDoorMesh = new THREE.Mesh( carDoor, new THREE.MeshStandardMaterial({ color: "pink" }))
+                                  world
+                                    .createEntity()
+                                    .addObject3DComponent(carDoorMesh, scene)
+                                    .addComponent(RaycastButton, { mesh: carDoorMesh, vehicle:car, scene: scene3D, camera: cam, raycaster: raycaster })
+                                    //.addComponent(CarDoor, { scene: scene3D, camera: cam, vehicle: car })
+                                    .addComponent(ECSYTHREEX.Transform, {
+                                      position: { x: 3, y: -0.8, z: 0 },
+                                      rotation: { x: 0, y: 0, z: 0 }
+                                    })
+                                    .addComponent(ECSYTHREEX.Parent, { value: car })
                               } else {
 
                                   world.createEntity()
