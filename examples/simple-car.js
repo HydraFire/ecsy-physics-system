@@ -11,24 +11,23 @@ import { createLightProbe } from '../src/scene/lightProbe';
 
 import { ConvexBufferGeometry } from '../src/lib/ConvexGeometry.js';
 
-import { PhysicsRigidBody } from "../src/components/physics-rigid-body"
+import { Collider } from "../src/components/collider"
 import { VehicleBody } from "../src/components/vehicle-body"
 import { WheelBody } from "../src/components/wheel-body"
 import { CarDoor } from "../src/components/car-door"
 
-import { PhysicsSystem } from "../src/systems/physics-system"
-import { RaycastButtonSystem, RaycastButton } from "../src/systems/raycast-button-system"
+import { PhysicsSystem } from "../src/systems/PhysicsSystem"
+import { RaycastButtonSystem, RaycastButton } from "../src/systems/InteractButtonSystem"
 import { CarDoorSystem } from "../src/systems/car-door-system"
-import { WheelSystem } from "../src/systems/wheel-system"
 
 
 const world = new ECSYTHREE.ECSYThreeWorld()
   .registerSystem(PhysicsSystem)
-  .registerSystem(WheelSystem)
   .registerSystem(RaycastButtonSystem)
   .registerSystem(CarDoorSystem)
+
   .registerComponent(ECSYTHREEX.Transform)
-  .registerComponent(PhysicsRigidBody)
+  .registerComponent(Collider)
   .registerComponent(VehicleBody)
   .registerComponent(WheelBody)
   .registerComponent(RaycastButton)
@@ -101,7 +100,7 @@ world
   .createEntity()
   .addObject3DComponent(boxMesh, scene)
 
-  .addComponent(PhysicsRigidBody, { scale:{ x:100, y:1, z:100 }, mass: 0, type: 'box' })
+  .addComponent(Collider, { scale:{ x:100, y:1, z:100 }, mass: 0, type: 'box' })
 
   .addComponent(ECSYTHREEX.Transform, {
     position: { x: 0, y: -3.3, z: 0 },
@@ -143,7 +142,7 @@ const convexMesh = new THREE.Mesh( convexGeometry, new THREE.MeshStandardMateria
   world
     .createEntity()
     .addObject3DComponent(miniBoxMesh, scene)
-    .addComponent(PhysicsRigidBody, { scale:{ x:1, y:4, z:2 }, mass: 100, type: 'box' })
+    .addComponent(Collider, { scale:{ x:1, y:4, z:2 }, mass: 100, type: 'box' })
 
     .addComponent(ECSYTHREEX.Transform, {
       position: { x: 0, y: 6, z: 0 },

@@ -5,7 +5,7 @@ import * as ECSYTHREE from "ecsy-three"
 import * as ECSYTHREEX from "ecsy-three/extras"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
-import { PhysicsRigidBody } from "../src/components/physics-rigid-body"
+import { Collider } from "../src/components/collider"
 import { PhysicsSystem } from "../src/systems/physics-system"
 
 
@@ -14,7 +14,7 @@ import { PhysicsSystem } from "../src/systems/physics-system"
 const world = new ECSYTHREE.ECSYThreeWorld()
   .registerSystem(PhysicsSystem)
   .registerComponent(ECSYTHREEX.Transform)
-  .registerComponent(PhysicsRigidBody)
+  .registerComponent(Collider)
 
 
 const data = ECSYTHREEX.initialize(world, { vr: false })
@@ -65,10 +65,11 @@ function createBox() {
     .createEntity()
     .addObject3DComponent(miniMesh.clone(), scene)
 
-    .addComponent(PhysicsRigidBody, {
+    .addComponent(Collider, {
       scale:{ x:0.2, y:0.2, z:0.2 },
       mass: 0.1
     })
+
 
     .addComponent(ECSYTHREEX.Transform, {
       position: { x: (Math.random()*0.5) -0.25, y: 3, z: (Math.random()*0.5) -0.25 },
@@ -88,12 +89,12 @@ function createBox() {
   const boxGeo = new THREE.BoxBufferGeometry(1, 1, 1)
   const boxMesh = new THREE.Mesh( boxGeo, new THREE.MeshStandardMaterial({ color: "pink" }))
 
-
-world
+let h = boxMesh.clone()
+let r = world
   .createEntity()
-  .addObject3DComponent(boxMesh.clone(), scene)
+  .addObject3DComponent(h, scene)
 
-  .addComponent(PhysicsRigidBody, { scale:{ x:1, y:1, z:1 }, mass: 0 })
+  .addComponent(Collider, { scale:{ x:1, y:1, z:1 }, mass: 0 })
 
   .addComponent(ECSYTHREEX.Transform, {
     position: { x: 0, y: 0, z: 0 },

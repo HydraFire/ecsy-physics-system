@@ -22,6 +22,15 @@ module.exports = {
   },
   mode: 'development',
   plugins,
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
+  }
   /*
   module: {
     rules: [
